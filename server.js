@@ -18,10 +18,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // MongoDB bağlantısı
-mongoose.connect('mongodb://localhost:27017/mqtt_dashboard', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
+mongoose.connect('mongodb://localhost:27017/mqtt_dashboard').then(() => {
   console.log("MongoDB bağlantısı başarılı!");
 }).catch((err) => {
   console.error("MongoDB bağlantı hatası:", err);
@@ -30,8 +27,19 @@ mongoose.connect('mongodb://localhost:27017/mqtt_dashboard', {
 // Admin hesabı kontrolü
 User.findOne({ username: "admin" }).then(admin => {
   if (!admin) {
-    User.create({ username: "admin", password: "1234", role: "admin" });
+    User.create({ 
+      username: "admin", 
+      email: "admin@localhost.com", 
+      password: "1234", 
+      role: "admin" 
+    }).then(() => {
+      console.log("Admin hesabı oluşturuldu: username: admin, password: 1234");
+    }).catch(err => {
+      console.error("Admin hesabı oluşturma hatası:", err);
+    });
   }
+}).catch(err => {
+  console.error("Admin hesabı kontrolü hatası:", err);
 });
 
 const mqttBroker = process.env.MQTT_BROKER || 'mqtt://192.168.1.26';

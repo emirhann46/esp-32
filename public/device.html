@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cihaz Detay</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <button onclick="goBack()" class="logout-btn">Geri Dön</button>
+    <h1 id="device-title">Cihaz Detay</h1>
+
+    <div class="device-info">
+      <p><strong>IP:</strong> <span id="device-ip"></span></p>
+      <p><strong>Sinyal Gücü:</strong> <span id="device-signal"></span></p>
+      <p><strong>Topic:</strong> <span id="device-topic"></span></p>
+      <p><strong>Son Güncelleme:</strong> <span id="device-update"></span></p>
+    </div>
+
+    <h2>Sinyal Gücü Geçmişi</h2>
+    <canvas id="signalChart" width="400" height="200"></canvas>
+  </div>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const deviceId = params.get('id');
+
+    fetch(`/api/device/${deviceId}`)
+      .then(res => res.json())
+      .then(device => {
+        document.getElementById('device-title').textContent = device.id;
+        document.getElementById('device-ip').textContent = device.ip;
+        document.getElementById('device-signal').textContent = device.signal + ' dBm';
+        document.getElementById('device-topic').textContent = device.topic;
+        document.getElementById('device-update').textContent = new Date(device.lastUpdate).toLocaleTimeString();
+
+        const ctx = document.getElementById('signalChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['-5dk', '-4dk', '-3dk', '-2dk', '-1dk', 'Şimdi'],
+            datasets: [{
+              label: 'Sinyal (dBm)',
+              data: [device.signal - 3, device.signal - 2, device.signal - 1, device.signal, device.signal, device.signal],
+              borderColor: '#3498db',
+              backgroundColor: 'rgba(52,152,219,0.1)',
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: false
+              }
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ESP32-3 Cihaz Sayfası</title>
+  <style>
+    body {
+      background: #f6f7fb;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .menu-btn {
+      position: fixed;
+      top: 12px;
+      left: 24px;
+      z-index: 2002;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .menu-btn:hover {
+      background: #e3f2fd;
+    }
+    .menu-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .menu-icon span {
+      display: block;
+      height: 4px;
+      width: 100%;
+      background: #1976d2;
+      border-radius: 2px;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -220px;
+      width: 200px;
+      height: 100%;
+      background: #26334d;
+      color: #fff;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+      padding-top: 60px;
+      transition: left 0.3s;
+      z-index: 2100;
+    }
+    .sidebar.open {
+      left: 0;
+    }
+    .sidebar a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 24px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #33405c;
+      transition: background 0.2s;
+    }
+    .sidebar a:hover {
+      background: #1976d2;
+    }
+    .topbar {
+      width: 100%;
+      background: #26334d;
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 900;
+      text-align: center;
+      padding: 18px 0 14px 0;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 10;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(25, 118, 210, 0.07);
+      padding: 32px 24px 32px 24px;
+      text-align: center;
+    }
+    .page-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #26334d;
+      margin-bottom: 36px;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+    .sensor-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .sensor-card {
+      flex: 1 1 0;
+      min-width: 180px;
+      background: #f9fafc;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.04);
+      padding: 28px 12px 20px 12px;
+      margin: 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .sensor-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fb8c00;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .sensor-value {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #26334d;
+      margin-bottom: 6px;
+    }
+    .sensor-unit {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 2px;
+    }
+    .back-btn {
+      margin: 38px auto 0 auto;
+      display: block;
+      background: #26334d;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 36px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+      letter-spacing: 1px;
+    }
+    .back-btn:hover {
+      background: #1976d2;
+      color: #fff;
+    }
+    @media (max-width: 700px) {
+      .container {
+        padding: 18px 4vw;
+      }
+      .sensor-row {
+        flex-direction: column;
+        gap: 18px;
+      }
+      .menu-btn {
+        top: 10px;
+        left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hamburger Menü -->
+  <button class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+    <span class="menu-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+  <!-- Yan Menü -->
+  <nav class="sidebar">
+    <a href="index.html">🏠 Anasayfa</a>
+    <a href="esp32_1.html">🔵 ESP32-1</a>
+    <a href="esp32_2.html">🟢 ESP32-2</a>
+    <a href="esp32_3.html">🟣 ESP32-3</a>
+    <a href="esp32_4.html">🟠 ESP32-4</a>
+    <a href="esp32_5.html">🔴 ESP32-5</a>
+    <!-- Diğer cihazlar için link ekleyebilirsiniz -->
+  </nav>
+  <div class="topbar">
+    ESP32 CİHAZ-TAKİP SİSTEMİ
+  </div>
+  <div class="container">
+    <div class="page-title" id="editable-title" ondblclick="editTitle()"></div>
+    <div class="sensor-row">
+      <div class="sensor-card">
+        <div class="sensor-title">Basınç</div>
+        <div class="sensor-value" id="pressure-value">--</div>
+        <div class="sensor-unit">hPa</div>
+      </div>
+      <div class="sensor-card">
+        <div class="sensor-title">Sıcaklık</div>
+        <div class="sensor-value" id="temperature-value">--</div>
+        <div class="sensor-unit">°C</div>
+      </div>
+      <div class="sensor-card">
+        <div class="sensor-title">Rüzgar</div>
+        <div class="sensor-value" id="wind-value">--</div>
+        <div class="sensor-unit">km/h</div>
+      </div>
+    </div>
+    <button onclick="history.back()" class="back-btn">← Geri Dön</button>
+  </div>
+  <script>
+    const deviceId = 'esp32_3';
+
+    // Sayfa açılırken başlığı backend'den çek
+    async function loadTitle() {
+      try {
+        const res = await fetch(`/api/device-title/${deviceId}`);
+        const data = await res.json();
+        document.getElementById('editable-title').textContent = data.title || 'ESP32-3 CİHAZ SAYFASI';
+        document.querySelector('.sidebar a[href="esp32_3.html"]').innerHTML = '🟣 ' + (data.title || 'ESP32-3');
+      } catch {
+        document.getElementById('editable-title').textContent = 'ESP32-3 CİHAZ SAYFASI';
+      }
+    }
+
+    // Başlığı düzenle
+    function editTitle() {
+      const titleDiv = document.getElementById('editable-title');
+      const current = titleDiv.textContent;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = current;
+      input.style.fontSize = '2rem';
+      input.style.fontWeight = '900';
+      input.style.width = '90%';
+      input.onblur = saveTitle;
+      input.onkeydown = function(e) {
+        if (e.key === 'Enter') input.blur();
+      };
+      titleDiv.replaceWith(input);
+      input.focus();
+
+      async function saveTitle() {
+        const newTitle = input.value.trim() || 'ESP32-3 CİHAZ SAYFASI';
+        // Backend'e gönder
+        await fetch(`/api/device-title/${deviceId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: newTitle })
+        });
+        // Yeni başlık divi oluştur
+        const newDiv = document.createElement('div');
+        newDiv.className = 'page-title';
+        newDiv.id = 'editable-title';
+        newDiv.ondblclick = editTitle;
+        newDiv.textContent = newTitle;
+        input.replaceWith(newDiv);
+        // Menüde de güncelle
+        document.querySelector('.sidebar a[href="esp32_3.html"]').innerHTML = '🟣 ' + newTitle.replace(' CİHAZ SAYFASI','');
+      }
+    }
+
+    // --- Menüdeki tüm cihaz başlıklarını dinamik olarak güncelle ---
+    async function updateSidebarTitles() {
+      const devices = [
+        { id: 'esp32_1', icon: '🔵' },
+        { id: 'esp32_2', icon: '🟢' },
+        { id: 'esp32_3', icon: '🟣' },
+        { id: 'esp32_4', icon: '🟠' },
+        { id: 'esp32_5', icon: '🔴' }
+      ];
+      for (const dev of devices) {
+        try {
+          const res = await fetch(`/api/device-title/${dev.id}`);
+          const data = await res.json();
+          const link = document.querySelector(`.sidebar a[href="${dev.id}.html"]`);
+          if (link) {
+            link.innerHTML = `${dev.icon} ${data.title ? data.title.replace(' CİHAZ SAYFASI','') : dev.id.toUpperCase()}`;
+          }
+        } catch {}
+      }
+    }
+
+    // window.onload'u güncelle
+    window.onload = async function() {
+      await loadTitle();
+      await updateSidebarTitles();
+    };
+  </script>
+</body>
+</html>

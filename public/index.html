@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LED Durum Paneli - Admin</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    /* index.html <style> kısmına ekle */
+.custom-header-bar {
+  width: 100vw;
+  background: linear-gradient(90deg, #0d47a1 60%, #1976d2 100%);
+  color: #fff;
+  padding: 0 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* ✅ Eklendi */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 2100;
+  min-height: 56px;
+  gap: 16px;
+}
+
+  .hamburger {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 18px;
+  margin-left: 0;
+  padding: 0 8px 0 0;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  width: 48px;
+}
+
+
+.header-title {
+  flex-grow: 1;
+  text-align: center;           /* ✅ Ortalama */
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 12px;
+
+}
+    
+.header-user {
+  font-size: 1.05rem;
+  background: rgba(255,255,255,0.12);
+  padding: 6px 18px;
+  border-radius: 18px;
+  white-space: nowrap;
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  margin-right: 42px;
+}
+ /* index.html <style> kısmına ekle */
+  
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .welcome {
+      font-size: 1rem;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+    .main-panel {
+      margin-left: 0;
+    }
+
+     /* çıkış kısmına ekle */
+  .header-user {
+  position: relative;
+  z-index: 2000;
+  cursor: pointer;
+  font-size: 1.05rem;
+  background: rgba(255,255,255,0.12);
+  padding: 6px 18px;
+  border-radius: 18px;
+  white-space: nowrap;
+  max-width: 350px;
+  overflow: visible;
+  text-overflow: ellipsis;
+  text-align: right;
+  margin-right: 42px;
+}
+.logout-btn {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  z-index: 10;
+  background: #b71015;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: none;
+}
+     /* çıkış kısmına ekle */
+
+
+    /* Sidebar */
+
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #2c3e50;
+      color: #fff;
+      transition: left 0.3s;
+      z-index: 1000;
+      padding-top: 60px;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    }
+    .sidebar.open {
+      left: 0;
+    }
+    .sidebar h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .esp-btn {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 12px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .esp-btn:hover {
+      background: #2980b9;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+    .overlay.open {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- index.html'de <body> içindeki en başa ekle -->
+<div class="custom-header-bar">
+  <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
+  <span class="header-title">ESP32WROOM - IOT ile Endüstriyel IO Kontrol Cihazı Tasarımı Sayfasına Hoşgeldiniz</span>
+
+  <span class="header-user" id="headerUser">
+    Kullanıcı: <span id="username"></span>
+<button id="logoutBtn" class="logout-btn" style="display:none; margin-left:10px;" onclick="logout()">Çıkış Yap</button>
+  </span>
+</div>
+
+<div class="overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<!-- <button class="hamburger" onclick="toggleSidebar()">&#9776;</button> -->  
+  <div class="sidebar" id="sidebar">
+    <h2>ESP32 Cihazları</h2>
+     <button class="esp-btn" onclick="window.location.href='esp32_1.html'">🔵 ESP32-1</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_2.html'">🟢 ESP32-2</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_3.html'">🟣 ESP32-3</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_4.html'">🟠 ESP32-4</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_5.html'">🔴 ESP32-5</button>
+  </div>
+
+  <div class="container">
+    <div class="topbar">
+<!-- <div class="welcome">Hoş geldiniz, <span id="username">Kullanıcı</span></div> -->      
+      <div id="logoutMsg" class="form-message" style="display:none;"></div>
+    </div>
+
+    <div class="main-panel">
+      <h1>LED Durum Takip Paneli</h1>
+
+      <div class="led-container">
+        <div class="led-card" data-led="led12">
+          <h2>Kırmızı LED (GPIO 12)</h2>
+          <div class="led-indicator">
+            <div class="led-circle"></div>
+            <span class="led-state">Bilinmiyor</span>
+          </div>
+          <div class="led-meta">
+            <p>Son Güncelleme: <span class="last-update">-</span></p>
+          </div>
+        </div>
+
+        <div class="led-card" data-led="led27">
+          <h2>Mavi LED (GPIO 27)</h2>
+          <div class="led-indicator">
+            <div class="led-circle"></div>
+            <span class="led-state">Bilinmiyor</span>
+          </div>
+          <div class="led-meta">
+            <p>Son Güncelleme: <span class="last-update">-</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="connection-status">
+        <h2>Bağlantı Durumu</h2>
+        <p>MQTT: <span id="mqtt-status">Bağlantı yok</span></p>
+        <p>Son Güncelleme: <span id="last-update">-</span></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+  <script src="devices.js"></script>
+  <script src="logout.js"></script>
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      window.location.href = "login.html";
+    } else if (user.role !== "admin") {
+      window.location.href = "user.html";
+    } else {
+      document.getElementById("username").textContent = user.username + " (Yönetici)";
+    }
+
+    // Cihaz detayı gösterme
+    document.addEventListener("click", function (e) {
+      if (e.target && e.target.classList.contains("toggle-details")) {
+        const item = e.target.closest(".device-item");
+        item.classList.toggle("active");
+      }
+    });
+
+    // Çıkış fonksiyonu
+   //console.log("logout.js yüklendi"); // Ekledik
+//function logout() {
+  //console.log("Çıkış fonksiyonu çağrıldı"); // Ekledik
+  //localStorage.removeItem("user");
+  //const msg = document.getElementById('logoutMsg');
+  //if (msg) {
+    //msg.textContent = "Başarıyla çıkış yapıldı!";
+    //msg.className = "form-message success";
+    //msg.style.display = "block";
+    //setTimeout(() => window.location.href = "login.html", 2000);
+  //} //else {
+    //window.location.href = "login.html";
+  //}
+//}
+
+       // ...existing code...
+document.addEventListener("DOMContentLoaded", function() {
+  const headerUser = document.getElementById("headerUser");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  // Kullanıcı kutusuna tıklayınca aç/kapat
+ headerUser.addEventListener("click", function(e) {
+  const isBtn = e.target.closest("#logoutBtn");
+  if (isBtn) return; // Butona tıklanırsa işlem yapma
+  logoutBtn.style.display = logoutBtn.style.display === "none" ? "block" : "none";
+});
+
+
+// Dışarı tıklayınca kapat (sadece headerUser dışında tıklanırsa)
+  document.addEventListener("click", function(e) {
+    if (!headerUser.contains(e.target)) {
+      logoutBtn.style.display = "none";
+    }
+  });
+});
+  </script>
+</body>
+</html>

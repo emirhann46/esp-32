@@ -1,0 +1,237 @@
+/* === GENEL STİL === */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #ece9e6, #ffffff);
+  margin: 0;
+  padding: 0;
+}
+
+/* === KAPSAYICI === */
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* === BAŞLIKLAR === */
+h1, h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* === LED KARTLARI === */
+.led-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.led-card {
+  flex: 1 1 300px;
+  max-width: 320px;
+  margin: 10px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  text-align: center;
+}
+.led-card:hover {
+  transform: scale(1.02);
+}
+.led-card h2 {
+  margin-top: 0;
+  color: #34495e;
+}
+
+/* === LED DURUM GÖSTERGESİ === */
+.led-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+.led-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #ccc;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+.led-state {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+.led-meta {
+  color: #777;
+  font-size: 0.9em;
+}
+
+/* === LED RENKLERİ === */
+.led-on .led-circle {
+  background-color: #27ae60;
+  box-shadow: 0 0 12px #2ecc71;
+}
+.led-off .led-circle {
+  background-color: #c0392b;
+}
+.led-unknown .led-circle {
+  background-color: #f39c12;
+}
+.led-on .led-state {
+  color: #27ae60;
+}
+.led-off .led-state {
+  color: #c0392b;
+}
+.led-unknown .led-state {
+  color: #f39c12;
+}
+
+/* === DURUM BİLGİLERİ === */
+.connection-status {
+  background: #f0f0f0;
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 1em;
+  margin-top: 20px;
+}
+#mqtt-status {
+  font-weight: bold;
+}
+
+/* === FORM SAYFALARI === */
+.form-container {
+  max-width: 400px;
+  margin: 80px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  text-align: center;
+}
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+button:hover {
+  background-color: #2980b9;
+}
+/* === Buton belirgin gösterme === */
+
+.form-message {
+  margin-bottom: 16px;
+  padding: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  text-align: center;
+  display: none;
+}
+.form-message.success {
+  color: #155724;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  display: block;
+}
+.form-message.error {
+  color: #721c24;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  display: block;
+}
+
+/* === CİHAZ KARTLARI === */
+.device-list {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin-top: 30px;
+}
+
+/* === ÇIKIŞ BUTONU === */
+.logout-btn {
+  position: relative;
+  top: 10px;
+  right: 10px;
+  background-color: #f44336;
+  color: white;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+.logout-btn:hover {
+  background-color: #d32f2f;
+}
+/* === YAN MENÜ === */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #2c3e50;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  z-index: 1000;
+}
+.sidebar a {
+  padding: 12px 24px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #f1f1f1;
+  display: block;
+  transition: 0.2s;
+}
+.sidebar a:hover {
+  background-color: #34495e;
+}
+.sidebar .closebtn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  color: #f1f1f1;
+}
+.sidebar.active {
+  width: 250px;
+}
+
+/* === MENÜ AÇMA BUTONU === */
+.menu-btn {
+  font-size: 28px;
+  cursor: pointer;
+  color: #2c3e50;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1100;
+  user-select: none;
+}
+

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kullanıcı Paneli</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #f6f7fb;
+    }
+    .hamburger {
+      font-size: 2rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1001;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      color: #3b82f6;
+      transition: color 0.2s;
+    }
+    .hamburger:hover {
+      color: #2563eb;
+    }
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #2d3748;
+      color: #fff;
+      transition: left 0.3s;
+      z-index: 1000;
+      padding-top: 60px;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    }
+    .sidebar.open {
+      left: 0;
+    }
+    .sidebar h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .esp-btn {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 12px;
+      background: #42a5f5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+    .esp-btn:hover {
+      background: #1976d2;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+    .overlay.open {
+      display: block;
+    }
+    /* Sağ üst kullanıcı kutusu ve çıkış butonu */
+    .header-user {
+      position: fixed;
+      top: 18px;
+      right: 32px;
+      z-index: 2000;
+      cursor: pointer;
+      font-size: 1.05rem;
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 8px 24px;
+      border-radius: 18px;
+      white-space: nowrap;
+      max-width: 350px;
+      overflow: visible;
+      text-overflow: ellipsis;
+      text-align: right;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+      display: inline-block;
+      border: 1.5px solid #90caf9;
+      transition: background 0.2s, color 0.2s;
+    }
+    .header-user:hover {
+      background: #bbdefb;
+      color: #0d47a1;
+    }
+    .logout-btn {
+      position: absolute;
+      right: 0;
+      top: 110%;
+      z-index: 10;
+      background: #494a4b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: none;
+      transition: background 0.2s;
+    }
+    .logout-btn:hover {
+      background: #a30b0b;
+    }
+    .container {
+      margin-top: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
+  <div class="sidebar" id="sidebar">
+    <h2>ESP32 Cihazları</h2>
+    <button class="esp-btn" onclick="window.location.href='esp32_1.html'">ESP32-1</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_2.html'">ESP32-2</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_3.html'">ESP32-3</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_4.html'">ESP32-4</button>
+    <button class="esp-btn" onclick="window.location.href='esp32_5.html'">ESP32-5</button>
+  </div>
+
+  <!-- Sağ üst kullanıcı kutusu ve çıkış butonu -->
+  <span class="header-user" id="headerUser">
+    Kullanıcı: <span id="username"></span> <span style="font-size:0.98rem; color:#1976d2;">(Kullanıcı)</span>
+    <button id="logoutBtn" class="logout-btn" onclick="logout()">Çıkış Yap</button>
+  </span>
+
+    <!-- TURUNCU ÜST BAR -->
+  <div style="
+    width: 100%;
+    background: #2d3748;
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 900;
+    text-align: center;
+    padding: 18px 0 14px 0;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 900;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 18px;
+  ">
+    ESP32 CİHAZ-TAKİP SİSTEMİNE HOŞGELDİNİZ !
+  </div>
+
+  <div class="container"> 
+    <h1 style="text-align:center; color:#26334d; font-weight:700; margin-bottom:32px;">Kullanıcı Cihazı</h1>
+    <div id="logoutMsg" class="form-message" style="display:none;"></div>
+
+    <div class="led-container">
+      <div class="led-card" data-led="led12">
+        <h2>Kırmızı LED (GPIO 12)</h2>
+        <div class="led-indicator">
+          <div class="led-circle"></div>
+          <span class="led-state">Bilinmiyor</span>
+        </div>
+        <div class="led-meta">
+          <p>Son Güncelleme: <span class="last-update">-</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="connection-status">
+      <h2>Bağlantı Durumu</h2>
+      <p>MQTT: <span id="mqtt-status">Bağlantı yok</span></p>
+      <p>Son Güncelleme: <span id="last-update">-</span></p>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+  <script src="logout.js"></script>
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || user.role !== "user") {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("username").textContent = user.username;
+    }
+
+    // Sağ üst kullanıcı kutusuna tıklayınca çıkış butonunu aç/kapat
+    document.addEventListener("DOMContentLoaded", function() {
+      const headerUser = document.getElementById("headerUser");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      headerUser.addEventListener("click", function(e) {
+        if (e.target.id === "logoutBtn") return;
+        logoutBtn.style.display = logoutBtn.style.display === "none" ? "block" : "none";
+        e.stopPropagation();
+      });
+
+      document.addEventListener("click", function(e) {
+        if (!headerUser.contains(e.target)) {
+          logoutBtn.style.display = "none";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

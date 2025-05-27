@@ -27,11 +27,11 @@ mongoose.connect('mongodb://localhost:27017/mqtt_dashboard').then(() => {
 // Admin hesabı kontrolü
 User.findOne({ username: "admin" }).then(admin => {
   if (!admin) {
-    User.create({ 
-      username: "admin", 
-      email: "admin@localhost.com", 
-      password: "1234", 
-      role: "admin" 
+    User.create({
+      username: "admin",
+      email: "admin@localhost.com",
+      password: "1234",
+      role: "admin"
     }).then(() => {
       console.log("Admin hesabı oluşturuldu: username: admin, password: 1234");
     }).catch(err => {
